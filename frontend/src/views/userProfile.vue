@@ -334,7 +334,6 @@ export default {
 .update-profile-window {
   margin-left: 2%;
 }
-
 .msg {
   font-family: 'Arial';
   font-size: 16px;

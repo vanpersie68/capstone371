@@ -14,4 +14,9 @@ urlpatterns = [
     url(r'^verification/email/$', send_verification_email),
     url(r'^delete/$', delete_user),
     url(r'^allauth/', include('allauth.urls')),
+    url(r'^send-invite/', send_invite, name='send-invite'),
+    url(r'^accept-invitation/$', accept_invitation, name='accept-invitation'),
+    url(r'^get_token/$', check_email_registered, name='check-email-registered'),
 ]
+
+

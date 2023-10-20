@@ -271,3 +271,4 @@ def reverse_random(lst, order):
     new_result.insert(0, lst[0])
     flat_list = [item for sublist in new_result for item in (sublist if isinstance(sublist, list) else [sublist])]
     return flat_list
+

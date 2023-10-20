@@ -7,8 +7,14 @@ from drf_yasg2 import openapi
 from rest_framework import permissions
 import os
 from pathlib import Path
+from . import consumers
+from . import focus
+from django.conf.urls import url
 
-
+websocket_urlpatterns = [
+    url(r'^ws/test/(?P<id>[0-9]|[1-9][0-9]|100)/$', consumers.MyConsumer.as_asgi()),
+    url(r'^ws/focus/', focus.Focus.as_asgi()),
+]
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -34,6 +40,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('survey/', include('survey.urls')),
    # path('status/', django_core.views.status),
+    path('emailInfo/', include('emailInfo.urls')),
     path('api/st/', include('surveytaker.urls')),
     *static('/static', document_root=os.path.join(BASE_DIR, 'static/static')),
     *static('/upload', document_root=os.path.join(BASE_DIR, 'static/upload')),

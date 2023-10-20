@@ -69,3 +69,4 @@ urlpatterns = [
     url(r'^common/upload', common_view.upload),
     url(r'^common/avatar', common_view.avatar),
 ]
+

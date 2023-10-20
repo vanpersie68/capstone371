@@ -21,6 +21,18 @@
       <!-- List Table or Card Table -->
       <!-- <el-switch v-model="listType" :active-text="$t('g5.Card')" :inactive-text="$t('g5.List')">
       </el-switch> -->
+
+      <div v-if="this.emails.length > 0">
+          <br /><br />
+          <el-alert
+            title="You have an invitation email pending, please check it!"
+            type="info"
+            class="custom-alert"
+            show-icon
+            close-text=""
+          ></el-alert>
+      </div>
+
       <br /><br />
       <a @click="createSurvey" class="action-btn">{{ $t('g5.ms-create') }}</a>
       <label for="file-btn" class="action-btn">{{
@@ -138,6 +150,17 @@
               <a class="action-btn" @click="cloneSurvey(survey.id, survey.name)">{{ $t('g5.Clone') }}</a>
             </span>
             <a class="action-btn" @click="deleteSurvey(survey.id, survey.name)">{{ $t('g5.Delete') }}</a>
+            <a class="action-btn" @click="collaborator(survey.id, survey.name)"
+              v-if="survey.status === 0 && survey.researcher == userId"
+              >{{ $t('g5.Add-collaborator') }}</a
+            >
+            <a
+              class="action-btn"
+              @click="removeCollaborator(survey.id, userId)"
+              v-if="survey.status === 0 && survey.researcher != userId"
+              >{{ $t('g5.Remove-collaborators') }}</a
+            >
+
             <a class="action-btn-publish" @click="publishSurvey(survey.id)" v-if="survey.status === 0">{{ $t('g5.Publish')
             }}</a>
             <a class="action-btn-end" @click="endSurvey(survey.id)" v-else-if="survey.status === 1">{{ $t('g5.End Survey')
@@ -320,6 +343,9 @@
                   </span>
                   <el-button type="text" class="action-btn" @click="deleteSurvey(survey.id, survey.name)">{{
                     $t('g5.Delete') }}</el-button>
+                  <el-button type="text" class="action-btn" @click="collaborator(survey.id, survey.name)" v-if="survey.status === 0"
+                    >{{ $t('g5.Add-collaborator') }}</el-button
+                  >
                   <el-button type="text" class="action-btn-publish" @click="publishSurvey(survey.id)"
                     v-if="survey.status === 0">{{ $t('g5.Publish') }}</el-button>
                   <el-button type="text" class="action-btn-end" @click="endSurvey(survey.id)"
@@ -463,6 +489,7 @@ export default {
         zh: '中文',
       },
       isLoading: false,
+      emails: []
     }
   },
   watch: {
@@ -609,6 +636,31 @@ export default {
           return x > y ? -1 : x > y ? 1 : 0
         })
       }
+    },
+    collaborator(id, name){
+        this.$router.push({
+        name: 'invite',
+        params: { id: id, name: name }
+      });
+    },
+    removeCollaborator(surveyid, userId){
+        const confirmed = confirm('Are you sure you want to remove yourself from collaboration?');
+        if (confirmed){
+            this.$axios
+                .post('survey/collaborators/delete/', {survey_id: surveyid,
+                                                       user_id: userId})
+                .then(() => {
+                    alert('Delete successfully.');
+                    window.location.reload()
+                })
+                .catch((error) => {
+                // Handle error
+                alert('Failed, please try again.'+error)
+                window.location.reload()
+                });
+        }else{
+            alert('Operation canceled.');
+        }
     },
     changeTimeOrder() {
       if (this.ifTimeOrder) {
@@ -1133,6 +1185,15 @@ export default {
         this.userId = res.data.pk
       })
     await this.getSurveys()
+
+    await this.$axios
+    .get('emailInfo/get_emails/' + this.userId)
+    .then((response) => {
+        this.emails = response.data
+    })
+    .catch((error) => {
+        // Handle error
+    });
   },
 }
 </script>
@@ -1195,7 +1256,6 @@ export default {
   margin: 2px 10px 2px 0px;
   display: inline-block;
 }
-
 .action-btn-edit {
   cursor: pointer;
   border: 1px solid black;
@@ -1207,7 +1267,6 @@ export default {
   margin: 2px 10px 2px 0px;
   display: inline-block;
 }
-
 .action-btn-edit:hover {
   color: gray;
 }
@@ -1229,7 +1288,6 @@ export default {
 .action-btn-publish:hover {
   color: gray;
 }
-
 .action-btn-end {
   cursor: pointer;
   border: 1px solid black;
@@ -1246,7 +1304,6 @@ export default {
 .action-btn-end:hover {
   color: gray;
 }
-
 .action-btn-mute {
   cursor: pointer;
   border: 1px solid black;
@@ -1259,14 +1316,12 @@ export default {
   margin: 2px 10px 2px 0px;
   display: inline-block;
 }
-
 .form-side {
   margin-top: 5px;
   border: 1px solid #999999;
   margin-bottom: 15px;
   border-radius: 10px;
 }
-
 .form-side2 {
   border: 1px solid #999999;
   margin-bottom: 10px;
@@ -1360,7 +1415,6 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
-
 .card-title {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -1375,6 +1429,10 @@ export default {
 .card-btns {
   height: 155px;
   overflow-y: auto;
+}
+
+.custom-alert {
+  color: red; /* Set the text color to red */
 }
 
 .spinner {

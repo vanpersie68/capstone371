@@ -12,6 +12,8 @@ export default new Vuex.Store({
   state: {
     mutex: false,
     survey: {},
+    currentQuestionID: null,
+    locksocket: null
   },
   mutations: {
     /**
@@ -21,6 +23,12 @@ export default new Vuex.Store({
      */
     initSurvey(state, response) {
       Vue.set(state, 'survey', response)
+    },
+    setLockSocket(state, socket) {
+      state.locksocket = socket;
+    },
+    SET_SURVEY(state, data) {
+      state.survey = data;
     },
     /**
      * Set whether toggled or not toggled
@@ -232,6 +240,8 @@ export default new Vuex.Store({
      * @param survey - current survey
      * @param order - block index
      */
+
+    //切换第几个表单
     handleBlockClick({ survey }, order) {
       // Set currentQuestion in previous block to null
       let prevBlock = survey.editorData.blocks.slice().filter((b) => {
@@ -260,28 +270,28 @@ export default new Vuex.Store({
      * @param questionOrder - question index to be set
      * @param blockOrder - block index
      */
-    handleQuestionClick({ survey }, { questionOrder, blockOrder }) {
+
+    //问题点击事件
+    handleQuestionClick(state, { questionOrder, blockOrder }) {
       // Exit flowView
-      survey.editorData.flowView = false
-
+      state.survey.editorData.flowView = false
       // Set currentQuestion in previous block to null
-      let prevBlock = survey.editorData.blocks.slice().filter((b) => {
-        return b.order == survey.editorData.currentBlock
+      let prevBlock = state.survey.editorData.blocks.slice().filter((b) => {
+        return b.order == state.survey.editorData.currentBlock
       })
-
       if (prevBlock[0] != null) {
         prevBlock[0].questionData.currentQuestion = null
       }
-
       // Set new question's enclosing block as currentBlock
-      survey.editorData.currentBlock = blockOrder
-
+      state.survey.editorData.currentBlock = blockOrder
       // Update currentQuestion in currentBlock to selected question
-      let thisBlock = survey.editorData.blocks.slice().filter((b) => {
+      let thisBlock = state.survey.editorData.blocks.slice().filter((b) => {
         return b.order == blockOrder
       })
       thisBlock[0].questionData.currentQuestion = questionOrder
+      state.currentQuestionID = questionOrder
     },
+
     /**
      * Change block order (after drag and drop)
      * @param survey - current survey
@@ -1143,9 +1153,17 @@ export default new Vuex.Store({
       // console.log(res)
       // commit('addComment', res)
     },
+    updateSurvey({ commit }, data) {
+      commit('SET_SURVEY', data);
+    },
+    setLockSocket({ commit }, socket) {
+      commit('setLockSocket', socket);
+    },
     /**
      * Load current survey
      */
+
+    //获取数据的地方
     async loadSurvey({ commit }, surveyId) {
       const response = await SurveyServices.getSurveyData(surveyId)
 
@@ -1207,7 +1225,6 @@ export default new Vuex.Store({
               response.blocks[i].questionData.questions[k].articleRetweets
             response.blocks[i].questionData.questions[k].sendCount =
               response.blocks[i].questionData.questions[k].articleSends
-            
           }
 
           if (
@@ -1328,14 +1345,10 @@ export default new Vuex.Store({
         ],
         currentBlock: null,
         blocks: response.blocks,
-        // randomSections: [ {startWith: 3, endWith: 3, displayNum: 1}, {startWith: 1, endWith: 2, displayNum: 1}]
         randomSections: response.randomSections,
-        // randomSections: [],
       }
-
       delete response.blocks
-
-      console.log(response)
+      console.log(response, '整理数据的地方1')
       commit('initSurvey', response)
     },
     /**
@@ -1506,7 +1519,11 @@ export default new Vuex.Store({
       })
       return currentBlock[0]
     },
+
+
+    //动态记录当前问题
     currentQuestion: (state) => {
+
       let currentBlock = state.survey.editorData.blocks.slice().filter((b) => {
         return b.order == state.survey.editorData.currentBlock
       })
@@ -1516,9 +1533,10 @@ export default new Vuex.Store({
         .filter((q) => {
           return q.order == currentBlock[0].questionData.currentQuestion
         })
-
+      console.log('动态记录的问题currentQuestion[0]', currentQuestion[0]);
       return currentQuestion[0]
     },
+
     numBlocks: (state) => {
       return state.survey.editorData.blocks.length
     },

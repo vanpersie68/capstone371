@@ -159,7 +159,6 @@ export default {
   padding: 8px;
   width: auto;
 }
-
 @media (min-width: 1130px) {
   h1 {
     color: black;
@@ -171,7 +170,6 @@ export default {
     margin-right: 8px;
     font-size: 30px;
   }
-
   .title {
     display: flex;
     flex-direction: row;
@@ -185,7 +183,6 @@ export default {
     font-weight: bold;
   }
 }
-
 @media (max-width: 1129px) and (min-width: 890px) {
   h1 {
     color: black;
@@ -197,7 +194,6 @@ export default {
     text-align: left;
     margin-right: 8px;
   }
-
   .title {
     display: flex;
     flex-direction: row;
@@ -211,13 +207,11 @@ export default {
     font-weight: bold;
   }
 }
-
 @media (max-width: 889px) {
   .question-box {
     margin: 2px;
     padding: 0px;
   }
-
   h1 {
     color: black;
     padding: 0 0 0 8px;
@@ -228,7 +222,6 @@ export default {
     text-align: left;
     margin-right: 8px;
   }
-
   .title {
     display: flex;
     flex-direction: row;

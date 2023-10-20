@@ -1,18 +1,24 @@
 from allauth.account.utils import send_email_confirmation
-from django.contrib.auth import update_session_auth_hash
-from django.http import JsonResponse
 from rest_auth.app_settings import PasswordChangeSerializer
-from rest_auth.serializers import PasswordResetConfirmSerializer
 from drf_yasg2 import openapi
 from drf_yasg2.utils import swagger_auto_schema
 from django.http import JsonResponse
 from rest_auth.serializers import PasswordResetConfirmSerializer
-from rest_auth.views import sensitive_post_parameters_m, PasswordChangeView
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from django.shortcuts import render
+from django.core.validators import EmailValidator
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+from surveybuilder.models import Survey
+from rest_framework.authtoken.models import Token
+from emailInfo.views import add_email_info
 
 
 @swagger_auto_schema(
@@ -149,3 +155,105 @@ def reset_password(request):
             else:
                 error_code.append(7)  # Unknown error, please try again
         return JsonResponse({'Message': error_code}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(operation_summary='send ivitation email', methods=['POST'])
+@api_view(['POST'])
+# @permission_classes([IsAuthenticated, ])
+def send_invite(request):
+    # if request.method == 'POST':
+        email = request.data.get('email')
+        email_validator = EmailValidator()
+
+        try:
+            email_validator(email)
+
+            # if check_email_registered(email):
+            #     return Response({'message': 'Invalid email address. Please enter a valid email address.'}, status=400)
+
+
+            smtp_server = 'smtp.qq.com'
+            smtp_port = 587  # 通常为587或465
+            smtp_username = '1194726682'
+            smtp_password = 'tpimvahkhbwwjbab'
+            sender_email = '1194726682@qq.com'
+            recipient_email = email
+
+            # 创建邮件内容
+            # '<a href="https://yourwebsite.com/accept-invitation?token={}">Accept Invitation</a>\n\n'\
+
+
+            try:
+                user = User.objects.get(email=email)
+                token = Token.objects.get(user=user)
+            except User.DoesNotExist:
+                token = None
+            except Token.DoesNotExist:
+                token = None
+            # user = User.objects.get(email=email)
+            # token = Token.objects.get(user=user)
+
+            sender = User.objects.get(username=request.data.get('username'))
+            survey = Survey.objects.get(id=request.data.get('surveyid'))
+
+            if token is not None:
+                email_id = add_email_info(sender, user, survey)
+            else:
+                email_id = add_email_info(sender, None, survey)
+
+
+            subject = 'Please confirm this invitation'
+            message = 'User {} has invited you to collaborate on a survey - {}\n\n' \
+                      'To accept this invitation, please click the following link:\n\n' \
+                      '{}accept-invitation?key={}&id={}&email={}\n\n' \
+                      'Note: This invitation was intended for {}. If you were not ' \
+                      'expecting this invitation, you can ignore this email.\n'.format(request.data.get('username'),
+                                                                                       request.data.get('surveyname'),
+                                                                                       request.data.get('websiteUrl'),
+                                                                                       token,
+                                                                                       request.data.get('surveyid'),
+                                                                                       email_id,
+                                                                                       email, )
+            msg = MIMEMultipart()
+            msg['From'] = sender_email
+            msg['To'] = recipient_email
+            msg['Subject'] = subject
+            msg.attach(MIMEText(message, 'plain'))
+
+            try:
+                server = smtplib.SMTP(smtp_server, smtp_port)
+                server.starttls()
+                server.login(smtp_username, smtp_password)
+                server.sendmail(sender_email, recipient_email, msg.as_string())
+
+                return Response({'message': 'Invitation sent successfully'})
+            except Exception as e:
+                return Response({'message': f'Email could not be sent. Error: {str(e)}'})
+
+        except ValidationError as e:
+            # 电子邮件地址无效
+            return Response({'message': 'Invalid email address. Please enter a valid email address.'}, status=400)
+
+
+def check_email_registered(request):
+    email = request.GET.get('email')
+
+    if request.method == 'GET':
+        try:
+            user = User.objects.get(email=email)
+            token = Token.objects.get(user=user)
+            return JsonResponse({'token': token.key})
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist'}, status=400)
+        except Token.DoesNotExist:
+            return JsonResponse({'error': 'Token does not exist'}, status=400)
+    else:
+        return JsonResponse({'error': 'Unsupported method'}, status=405)
+
+
+def get_user_name(request):
+    key = request.GET.get('key')
+
+
+def accept_invitation(request):
+    return render(request, 'acceptInvitation.vue')

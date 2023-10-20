@@ -16,6 +16,7 @@ from surveytaker.serializers import ResponseSerializer, ResponseQuestionSerializ
     ResponseBlockSerializer
 from surveybuilder.serializers import SurveySerializer, BlockSerializer, QuestionSerializer, \
     MultiChoiceSerializer, ButtonQuestionSerializer, PostAddonfieldSerializer, RadomSectionsSerializer,RankOrderSerializer,MatrixTableSerializer,SlidersSerializer,GroupsSerializer,CommentSerializer
+from django.db.models import Q
 
 
 @swagger_auto_schema(
@@ -64,7 +65,12 @@ def survey_list(requset, researcher_id):
     get:
     Return surveys created by the researcher
     """
-    surveys = Survey.objects.filter(researcher_id=researcher_id).filter(deleted=False)
+    condition1 = Q(researcher_id=researcher_id)
+    condition2 = Q(collaborator__contains=[researcher_id])
+
+    surveys = Survey.objects.filter(condition1 | condition2).filter(deleted=False)
+    # surveys = Survey.objects.filter(researcher_id=researcher_id).filter(deleted=False)
+
     survey_serialized = SurveySerializer(surveys, many=True)
     return JsonResponse(survey_serialized.data, safe=False)
 
@@ -249,7 +255,7 @@ def get_survey_data(survey, blocks):
             ques['typedata'] = questiontype_serialized.data
             comments = Comment.objects.filter(question=ques['id'])
             ques['comments'] = CommentSerializer(comments,many=True).data
-            print(ques['comments'])
+
             if ques['type'] == 'Multiple choice':
                 multichoice = MultiChoiceQuestion.objects.get(question=ques['id'])
                 choices = MultiChoice.objects.filter(question=multichoice.id).order_by('order')
@@ -285,4 +291,6 @@ def get_survey_data(survey, blocks):
                 addon = PostAddonfield.objects.filter(postRow=socialPost.id)
                 addonSerialized = PostAddonfieldSerializer(addon, many=True)
                 ques['addon'] = addonSerialized.data[:]
+
     return survey_data
+

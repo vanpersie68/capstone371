@@ -23,8 +23,10 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
+    'channels',
     'surveybuilder.apps.SurveybuilderConfig',
     'surveytaker.apps.SurveyTakerConfig',
+    'emailInfo.apps.EmailInfoConfig',
     'crontab',
     'django_apscheduler',
     'django.contrib.admin',
@@ -44,7 +46,7 @@ INSTALLED_APPS = [
     'django_nose',
     'drf_yasg2',
     'os',
-    'google.cloud'
+    'google.cloud',
 ]
 
 # Use nose to run all tests
@@ -90,60 +92,13 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/static")]
 
 WSGI_APPLICATION = 'django_core.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-# 		    'ENGINE': 'django.db.backends.postgresql',
-# 				'NAME': 'cp13',
-# 				'USER': 'postgres',
-# 				'PASSWORD': '^bk!FH##W%4ax!FF',
-# 		    'HOST': 'cp13dev.piran.xyz',
-#         'PORT': '5432',
-#     }
-# }
-
-# Group One Testing Server
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'cs63',
-#         'USER': 'postgres',
-#         'PASSWORD': 'cs63-1-db',
-#         'HOST': '140.238.197.173',
-#         'PORT': '5432',
-#     }
-# }
-
-# group cs06-1 cloud database from digitalocean
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'defaultdb',
-#         'USER': 'doadmin',
-#         'PASSWORD': 'AVNS_3O4CM3o5CCT1--SN3BC',
-#         'HOST': 'db-postgresql-sgp1-18306-do-user-12863027-0.b.db.ondigitalocean.com',
-#         'PORT': '25060',
-#     }
-# }
-
-# # Group cs74-1 cloud database from digitalocean
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'defaultdb',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres*5432',
-#         'HOST': '170.64.153.247',
-#         'PORT': '5432',
-#     }
-# }
-
 # Local database
 DATABASES = {
     'default': {
 		    'ENGINE': 'django.db.backends.postgresql',
-				'NAME': 'postgres',
+				'NAME': 'defaultdb',
 				'USER': 'postgres',
-				'PASSWORD': '570337',
+				'PASSWORD': '1',
 		    'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -216,3 +171,5 @@ EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'cs63-1@mineserver.top'
 EMAIL_HOST_PASSWORD = 'CS63-1-mail'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
+
+ASGI_APPLICATION = 'django_core.asgi.application'

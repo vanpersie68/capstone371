@@ -409,7 +409,6 @@ input[type='text'] {
   box-sizing: border-box;
   border: 2px solid red;
   border-radius: 4px;
-
   padding: 8px;
   border: 2px solid #eff2f5;
 }

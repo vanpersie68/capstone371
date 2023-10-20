@@ -1,73 +1,63 @@
 <template>
-  <div class='block' :class="isActiveBlock ? 'active' : ''" @mouseup='handleBlockClick'>
-    <div class='block-header'>
-      <div class='block-title'>
-        <input type='text' v-model='block.title' @blur='updateBlockTitle' class='h1-tb' :style="$i18n.locale === 'ur' ? 'text-align: right;' : 'text-align: left;'
+  <div class="block" :class="isActiveBlock ? 'active' : ''" @mouseup="handleBlockClick" @mousedown="handleFocus">
+    <div class="block-header">
+      <div class="block-title">
+        <input type="text" v-model="block.title" @blur="updateBlockTitle" class="h1-tb" :style="$i18n.locale === 'ur' ? 'text-align: right;' : 'text-align: left;'
           " />
       </div>
-      <div class='opt-container'>
-        <div class='popup' :class="blockOptions
-          ? currentBlock.order == numBlocks &&
-            block.questionData.questions.length < 1
-            ? 'show above'
-            : 'show below'
-          : ''
+      <div class="opt-container">
+        <div class="popup" :class="blockOptions
+            ? currentBlock.order == numBlocks &&
+              block.questionData.questions.length < 1
+              ? 'show above'
+              : 'show below'
+            : ''
           " :style="$i18n.locale === 'ur' ? 'left: 0px;' : 'right: 0px;'">
           <h3>{{ $t('builderBlock.blockOptions') }}</h3>
-          <line-base class='dark' />
+          <line-base class="dark" />
           <ul>
             <li>
-              <button-base class='secondary min' :icon="'fas fa-clone fa-me'" :title="$t('builderBlock.duplicateBlock')"
-                           @mousedown="$store.dispatch('duplicateBlock')" />
+              <button-base class="secondary min" :icon="'fas fa-clone fa-me'" :title="$t('builderBlock.duplicateBlock')"
+                @mousedown="$store.dispatch('duplicateBlock')" />
             </li>
-            <line-base class='dark' />
+            <line-base class="dark" />
             <li>
-              <button-base class='secondary min' :icon="'fas fa-clone fa-me'"
-                           :title="$t('builderBlock.blockQuestionRandom')"
-                           @mousedown="$store.dispatch('duplicateBlock')" />
-            </li>
-            <line-base class='dark' />
-
-            <li>
-              <button-base class='secondary min red' :icon="'fas fa-eraser fa-me'"
-                           :title="$t('builderBlock.clearBlock')"
-                           @mousedown="$store.dispatch('clearBlock')" />
+              <button-base class="secondary min red" :icon="'fas fa-eraser fa-me'" :title="$t('builderBlock.clearBlock')"
+                @mousedown="$store.dispatch('clearBlock')" />
             </li>
             <li>
-              <button-base class='secondary min red' :icon="'fas fa-trash fa-me'"
-                           :title="$t('builderBlock.deleteBlock')"
-                           @mousedown="$store.commit('deleteBlock', block)" />
+              <button-base class="secondary min red" :icon="'fas fa-trash fa-me'" :title="$t('builderBlock.deleteBlock')"
+                @mousedown="$store.commit('deleteBlock', block)" />
             </li>
           </ul>
         </div>
-        <button-base class='secondary square' :icon="'fas fa-ellipsis-h fa-lg'" @buttonPress='pressBlockOptions'
-                     @buttonUnfocus='unfocusBlockOptions' />
+        <button-base class="secondary square" :icon="'fas fa-ellipsis-h fa-lg'" @buttonPress="pressBlockOptions"
+          @buttonUnfocus="unfocusBlockOptions" />
       </div>
     </div>
-    <line-base class='light'></line-base>
+    <line-base class="light"></line-base>
     <h3>{{ $t('builderBlock.descriptionText') }}</h3>
-    <text-area :placeholder="$t('builderBlock.typeDescription')" :block='block' @handleInput='updateBlockdescription' />
-    <Container :get-child-payload='getChildPayload' group-name='1' @drop='onDrop'>
-      <line-base class='light'></line-base>
-      <Draggable v-for='question in sortedQuestions' :key='question.order' :question='question'>
-        <builder-question :key='question.order' :blockOrder='block.order'
-                          :currentQuestion='block.questionData.currentQuestion' :question='question' :block='block' />
+    <text-area :placeholder="$t('builderBlock.typeDescription')" :block="block" @handleInput="updateBlockdescription" />
+    <Container :get-child-payload="getChildPayload" group-name="1" @drop="onDrop">
+      <line-base class="light"></line-base>
+      <Draggable v-for="question in sortedQuestions" :key="question.order" :question="question">
+        <builder-question :key="question.order" :blockOrder="block.order"
+          :currentQuestion="block.questionData.currentQuestion" :question="question" :block="block" />
       </Draggable>
     </Container>
-    <div class='container'>
-      <div class='popup' :class="newQuestion ? 'show above' : ''">
+    <div class="container">
+      <div class="popup" :class="newQuestion ? 'show above' : ''">
         <h3>{{ $t('builderBlock.questionType') }}</h3>
-        <line-base class='dark' />
-        <ul v-for='type in questionTypes' :key='type'>
+        <line-base class="dark" />
+        <ul v-for="type in questionTypes" :key="type">
           <li>
-            <button-base class='secondary min' :title="$t('builderBlock.' + type.toString().replace(/\s/g, ''))"
-                         @mousedown='insertNewQuestion(type)' />
+            <button-base class="secondary min" :title="$t('builderBlock.' + type.toString().replace(/\s/g, ''))"
+              @mousedown="insertNewQuestion(type)" />
           </li>
         </ul>
       </div>
-      <button-base class='primary standard popup-btn' :icon="'fas fa-plus fa-me'"
-                   :title="$t('builderBlock.addNewQuestion')" @buttonPress='pressNewQuestion'
-                   @buttonUnfocus='unfocusNewQuestion' />
+      <button-base class="primary standard popup-btn" :icon="'fas fa-plus fa-me'"
+        :title="$t('builderBlock.addNewQuestion')" @buttonPress="pressNewQuestion" @buttonUnfocus="unfocusNewQuestion" />
     </div>
   </div>
 </template>
@@ -96,15 +86,15 @@ export default {
     TextArea,
     TextBox,
     Container,
-    Draggable
+    Draggable,
   },
   props: {
-    block: Object
+    block: Object,
   },
-  data: function() {
+  data: function () {
     return {
       newQuestion: false,
-      blockOptions: false
+      blockOptions: false,
     }
   },
   computed: {
@@ -113,32 +103,32 @@ export default {
      * Sort questions inside a block
      * @returns Sorted questions in block
      */
-    sortedQuestions: function() {
+    sortedQuestions: function () {
       function compare(a, b) {
         if (a.order < b.order) {
           return -1
         }
         return 1
       }
-
       return this.block.questionData.questions.slice().sort(compare)
     },
     /**
      * Check if block is active
      * @returns true if active and false otherwise
      */
-    isActiveBlock: function() {
+
+    isActiveBlock: function () {
       if (
         this.currentBlock != null &&
         this.currentBlock.order == this.block.order
       ) {
+        console.log();
         return true
       }
 
       if (this.currentBlock == null && this.block.order == 1) {
         // Notify store that currentBlock.order should be 1
         store.commit('setInitialBlock')
-
         return true
       }
 
@@ -148,12 +138,12 @@ export default {
      * Check if a block has an active question
      * @returns true if so and false otherwise
      */
-    hasActiveQuestion: function() {
+    hasActiveQuestion: function () {
       if (this.block.questionData.currentQuestion != null) {
         return true
       }
       return false
-    }
+    },
   },
   methods: {
     /**
@@ -161,8 +151,11 @@ export default {
      */
     async updateBlockTitle(e) {
       await SurveyServices.patchBlock(this.block.id, {
-        title: this.block.title
+        title: this.block.title,
       })
+    },
+    async handleFocus () {
+      store.state.locksocket.send(this.block.id)
     },
     /**
      * Update and save block description
@@ -170,9 +163,9 @@ export default {
     async updateBlockdescription(e) {
       store.commit('updateBlockDescription', {
         inner: e,
-        block: this.block
+        block: this.block,
       })
-
+      console.log('执行了更新描述');
       await SurveyServices.patchBlock(this.block.id, { description: e })
     },
     /**
@@ -190,6 +183,8 @@ export default {
       }
 
       store.commit('handleBlockClick', this.block.order)
+      console.log('点击之后是否会存起来',this.block.order);
+      
     },
     /**
      * Display popup for block options
@@ -234,12 +229,13 @@ export default {
      */
     getChildPayload(index) {
       return this.sortedQuestions[index - 1]
-    }
-  }
+    },
+  },
 }
 </script>
-<style scoped lang='scss'>
-@import './src/assets/textbox.scss';
+
+<style scoped>
+@import '../../assets/textbox.css';
 
 html:lang(ur) * {
   text-align: right;
@@ -393,7 +389,6 @@ h3 {
 @media (max-width: 889px) {
   .block {
     width: 90%;
-    //width: 300px;
   }
 }
 

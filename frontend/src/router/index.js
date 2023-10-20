@@ -6,9 +6,11 @@ import Login from '../views/login'
 import Signup from '../views/signup'
 import User from '../views/userProfile'
 import MySurvey from '../views/mySurvey'
+import invite from '../views/invite'
 import forgetPassword from '../views/forgetPassword'
 import resetPassword from '../views/resetPassword'
 import verifyEmail from '../views/verifyEmail'
+import acceptInvitation from '../views/acceptInvitation'
 import survey from '../views/survey'
 import SurveyTaker from '../components/SurveyTaker/SurveyTaker'
 import Success from '../components/SurveyTaker/Success'
@@ -67,6 +69,14 @@ const routes = [
     },
   },
   {
+    name: 'invite',
+    path: '/invite/:id',
+    component: invite,
+    meta: {
+      title: 'Add Collaborators',
+    },
+  },
+  {
     name: 'mySurvey',
     path: '/my_survey',
     component: MySurvey,
@@ -93,6 +103,11 @@ const routes = [
     name: 'verify_email',
     path: '/verification/email',
     component: verifyEmail,
+  },
+    {
+    name: 'accept_invitation',
+    path: '/accept-invitation/',
+    component: acceptInvitation,
   },
   {
     name: 'survey',

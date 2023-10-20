@@ -5,7 +5,7 @@
         <h3 style="margin-top: 0;">My Avatars</h3>
         <div class="list-scroll">
           <div class="avatar" v-for="a,i in avatars" :key="a.url">
-            <img :src="a.url" @click="handelChoose(a)" class="item"></img>
+            <img :src="a.url" @click="handelChoose(a)" class="item">
             <a style="cursor:pointer;color:red;" @click="handelDel(a)">DEL</a>
           </div>
         </div>

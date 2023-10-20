@@ -49,7 +49,6 @@
       @onChange="changeAvatar"
       />
     </div>
-  </div>
 
 </template>
 

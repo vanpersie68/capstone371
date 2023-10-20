@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 
 from surveybuilder.models import Avatar, Survey, Block, Question, SocialPostQuestion, ButtonRowQuestion, \
     ButtonQuestion, TextboxQuestionText, MultiChoiceQuestion, \
@@ -6,13 +7,17 @@ from surveybuilder.models import Avatar, Survey, Block, Question, SocialPostQues
     RandomSections,RankOrder,MatrixTable,MatrixTableQuestion,RankOrderQuestion,Comment,Sliders,SlidersQuestion,Groups,GroupsQuestion
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email')  # Add more fields as needed
+
 class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
         fields = ['id', 'researcher', 'name', 'language', 'consentText', 'time_limit_minutes', 'status',
                   'current_submission', 'required_submission', 'create_time', 'publish_time', 'expire_time',
-                  'is_repeat_answer', 'if_capture_gaze', 'code', 'duration', 'deleted', 'camera']
-
+                  'is_repeat_answer', 'if_capture_gaze', 'code', 'duration', 'deleted', 'camera', 'collaborator']
 
 class BlockSerializer(serializers.ModelSerializer):
     order = serializers.IntegerField(max_value=2147483647, min_value=0, required=True)
@@ -42,7 +47,7 @@ class SocialPostQuestionSerializer(serializers.ModelSerializer):
         model = SocialPostQuestion
         fields = ['id', 'question', 'articleURL',
                   'articleTitle', 'articleSource', 'articleImageLink','articleUser', 'articleStyle',
-                  'articleSnippet', 'articleLikes', 'articleComments', 'articleShares', 'articleSends', 'articleRetweets', 
+                  'articleSnippet', 'articleLikes', 'articleComments', 'articleShares', 'articleSends', 'articleRetweets',
                   'articleCommentsOn', 'articleSharesOn', 'articleRetweetsOn', 'articleSendsOn', 'articleLikesOn', 'numberAddon']
 
 
@@ -160,3 +165,4 @@ class AvatarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Avatar
         fields = ['id', 'user', 'url']
+

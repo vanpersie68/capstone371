@@ -3,17 +3,20 @@
     "dashboard": "Dashboard",
     "myAccount": "My Account"
   },
+
   "toolBar": {
     "surveyEditor": "Survey Editor",
     "flowEditor": "Flow Editor",
     "surveySettings": "Survey Settings",
     "surveyPreview": "Preview Survey"
   },
+
   "workSpace": {
     "addNewBlock": "add a new block",
     "preview": "preview",
     "save": "save"
   },
+
   "builderBlock": {
     "uploadImage": "Upload Image",
     "addNewQuestion": "add a new question",
@@ -29,7 +32,6 @@
     "Groups": "Groups",
     "blockOptions": "Block Options",
     "duplicateBlock": "Duplicate Block",
-    "blockQuestionRandom": "Randomize Questions",
     "clearBlock": "Clear Block",
     "deleteBlock": "Delete Block",
     "typeDescription": "Type description in markup...",
@@ -43,14 +45,12 @@
     "Linkedin": "Linkedin",
     "Tumblr": "Tumblr",
     "Pinterest": "Pinterest",
-    "Quora": "Quora",
-    "Mastodon": "Mastodon",
-    "Mix": "Mix",
     "Text": "Text",
     "Integer": "Integer",
     "Decimal": "Decimal",
     "Date": "Date"
   },
+
   "builderQuestion": {
     "questionOptions": "Question Options",
     "duplicateQuestion": "Duplicate Question",
@@ -74,10 +74,12 @@
     "endSurvey": "end survey",
     "other": "Other. Please specify"
   },
+
   "textBox": {
     "answer": "answer",
     "yourAnswer": "Please input your answer"
   },
+
   "pOptionsSliders": {
     "Sliders Options": "Sliders Options",
     "Number of statements": "Number of statements",
@@ -97,6 +99,7 @@
     "Set columns": "Set columns",
     "Set statements": "Set statements"
   },
+
   "pOptionsTextEntry": {
     "validateAnswer": "Validate Answer",
     "minCharLength": "Set Minimum Character Length",
@@ -109,12 +112,14 @@
     "intUpperBound": "Set Integer Upper Bound",
     "decUpperBound": "Set Decimal Upper Bound"
   },
+
   "pOptionsGroups": {
     "Number of choices": "Number of choices",
     "Number of groups": "Number of groups",
     "Set groups": "Set groups",
     "Set choices": "Set choices"
   },
+
   "pOptionsArticles": {
     "socialPostFormat": "Social Post Format",
     "socialEngagement": "Social Post Engagement",
@@ -124,14 +129,15 @@
     "retweetCount": "Retweet Count",
     "sendCount": "Send Count",
     "repostCount": "Repost Count",
-    "upvote": "Upvote",
     "reblogCount": "Reblog Count"
   },
+
   "pOptionsButtonRow": {
     "numButtons": "Number of buttons",
     "numAddon": "Number of additional field",
     "endSurvey": "Option to end survey"
   },
+
   "pOptionsMC": {
     "numOptions": "Number of Options",
     "allowMultiple": "Allow Multiple Answers",
@@ -139,10 +145,12 @@
     "setMaximum": "Set Maximum Answers Permitted",
     "otherInput": "Allow input other option"
   },
+
   "pOptionsDnD": {
     "numChips": "Number of Chips",
     "numCategories": "Number of Categories"
   },
+
   "pOptionsNumScale": {
     "scaleSettings": "Scale Settings",
     "minValue": "Minimum Value",
@@ -153,12 +161,15 @@
     "midLabelShow": "Middle Label Showing",
     "maxLabelShow": "Maximum Label Showing"
   },
+
   "pOptionsFlow": {
     "showFlow": "Show flow edit view"
   },
+
   "postEditable": {
     "noImage": "no image"
   },
+
   "qContentArticles": {
     "articleLink": "Link to article",
     "videoLink": "Link to video",
@@ -184,6 +195,7 @@
     "reblogCount": "Reblog count",
     "reblogPlaceholder": "Number of blogs to display..."
   },
+
   "panelBase": {
     "editQuestion": "Edit Question",
     "questionType": "Question Type",
@@ -191,14 +203,17 @@
     "answerReq": "Answer Required",
     "surveyFlow": "Edit Survey Flow"
   },
+
   "randomElem": {
     "start": "Start of randomised section",
     "end": "End of randomised section"
   },
+
   "flowEditor": {
     "block": "Block",
     "noQuestions": "This block has no questions"
   },
+
   "app": {
     "surveyTitle": "The Survey Title",
     "newBlockTitle": "Default Block Title",
@@ -226,6 +241,12 @@
   },
   "g5": {
     "Home": "Home",
+    "Back": "Back",
+    "Invite Users": "Invite Users",
+    "Enter Email": "Enter Email",
+    "Invite": "Invite",
+    "Accept Invitation": "Accept Invitation",
+    "You have been invited to edit the survey": "You have been invited to edit the survey",
     "User Profile": "User Profile",
     "My Surveys": "My Surveys",
     "Log In": "Log In",
@@ -298,6 +319,7 @@
     "Respondents": "Respondents",
     "Share": "Share",
     "Delete": "Delete",
+    "Add-collaborator": "Add Collaborator",
     "DownloadQR": "Download QR",
     "Publish": "Publish",
     "End Survey": "End Survey",
@@ -353,7 +375,12 @@
     "Select by Survey Status": "Select by Survey Status",
     "Search by title": "Search by title",
     "Card": "Card",
-    "List": "List"
+    "List": "List",
+    "Actions": "Actions",
+    "Remove": "Remove",
+    "Existing Collaborators": "Existing Collaborators",
+    "Remove-collaborators": "Remove Collaborators",
+    "Unread-email": "You have an invitation email pending, please check it"
   },
   "surveyTaker": {
     "Submit": "Submit",

@@ -8,7 +8,7 @@
       <el-button id="preview_btn" type="primary" @click="showPreview()">{{
         $t('workSpace.preview')
       }}</el-button>
-      <el-button id="save_btn" type="success" @click="saveSurvey" @saveSurvey>{{
+      <el-button id="save_btn" type="success" @click="saveSurvey">{{
         $t('workSpace.save')
       }}</el-button>
     </div>
@@ -18,14 +18,20 @@
       @buttonPress="$store.commit('insertNewBlock', { order: 1 })"></button-base>
 
     <line-base class="light"></line-base>
-    <div class="block-segment" v-for="block in sortedBlocks" :key="block.order">
+    <div class="block-segment" v-for="block in sortedBlocks" :key="block.order"
+      :class="{ 'matched-block': block.id === lockmun }">
+      <h3 v-if="block.id === lockmun" class="typing-indicator" style="text-align: center;">
+        Other people is typing! 
+      </h3>
       <builder-block :block="block" />
       <line-base class="light"></line-base>
-      <button-base class="tertiary min" :icon="'fas fa-plus fa-sm'" :title="$t('workSpace.addNewBlock')" @buttonPress="
-        $store.commit('insertNewBlock', { order: block.order + 1 })
-        "></button-base>
+      <button-base class="tertiary min" :icon="'fas fa-plus fa-sm'" :title="$t('workSpace.addNewBlock')"
+        @buttonPress="$store.commit('insertNewBlock', { order: block.order + 1 })"
+        :disabled="block.id === lockmun"></button-base>
       <line-base class="light"></line-base>
     </div>
+
+
   </div>
 
   <!-- Flow view -->
@@ -47,7 +53,6 @@
 
 <script>
 import SurveyServices from '../../services/SurveyServices'
-
 import BuilderBlock from './BuilderBlock.vue'
 import ButtonBase from '../../components/ButtonBase.vue'
 import LineBase from './LineBase.vue'
@@ -65,8 +70,42 @@ export default {
     BuilderBlock,
     TheFlowEditor,
   },
+  data() {
+    return {
+      lockmun: null,
+      settimeoutobj: null
+    }
+  },
   computed: {
     ...mapGetters(['surveyTitle', 'editorData', 'sortedBlocks', 'flowView']),
+    lockSocket() {
+      return store.state.locksocket;
+    }
+  },
+  watch: {
+    lockSocket: {
+      handler(newSocket) {
+        console.log('触发watch');
+        if (newSocket) {
+          newSocket.onmessage = (event) => {
+            // 处理从后端接收到的消息
+            console.log('后端传来广播Received message:', JSON.parse(event.data));
+            this.lockmun = Number(JSON.parse(event.data).locknum)
+          };
+        }
+      },
+      immediate: true // 在组件加载时立即执行一次逻辑
+    },
+    lockmun(newvalue) {
+      if (newvalue != 9999) {
+        if (this.settimeoutobj) {
+          clearTimeout(this.settimeoutobj)
+        }
+        this.settimeoutobj = setTimeout(() => {
+          this.lockmun = 9999
+        }, 2400000);
+      }
+    }
   },
   methods: {
     /**
@@ -131,6 +170,16 @@ html:lang(ur) * {
   justify-content: flex-end;
 }
 
+.matched-block {
+  position: relative!important ;
+  opacity: 0.3 !important;
+  pointer-events: none;
+}
+
+/* .matched-block::before {
+  content: "lock";
+} */
+
 #title {
   color: black;
   padding: 0 8px;
@@ -171,49 +220,40 @@ html:lang(ur) * {
   margin: 0 auto;
 }
 
-@media only screen and (max-width: 767px) {
-  .block-segment {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    /* min-width: 816px; */
-  }
-
-  #preview_btn {
-    position: absolute;
-    right: 2%;
-    top: 3rem;
-    /*width: 5%;*/
-    font-size: small;
-    z-index: 1;
-    margin-right: 5rem;
-    /*margin-bottom: 15rem;*/
-  }
-
-  #save_btn {
-    position: absolute;
-    right: 2%;
-    top: 3rem;
-    /*width: 5%;*/
-    font-size: small;
-    z-index: 1;
-  }
-
-}
-
-@media only screen and (min-width: 768px) {
-  .block-segment {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 816px;
-    min-width: 816px;
-    margin: 0 auto;
-  }
+.typing-indicator {
+  color: red;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999999999999;
 }
 
 
+.block-segment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 816px;
+  min-width: 816px;
+  margin: 0 auto;
+}
+
+#preview_btn {
+  position: absolute;
+  right: 2%;
+  top: 100px;
+  width: 6%;
+  font-size: small;
+}
+
+#save_btn {
+  position: absolute;
+  right: 2%;
+  top: 160px;
+  width: 6%;
+  font-size: small;
+}
 
 .el-button--primary {
   background: #204cdc !important;
@@ -225,28 +265,5 @@ html:lang(ur) * {
   background: #5976d5 !important;
   border-color: #5976d5 !important;
   color: #ffffff !important;
-}
-
-
-/*PC device*/
-@media only screen and (min-width: 992px) {
-  #preview_btn {
-    position: absolute;
-    right: 2%;
-    top: 100px;
-    width: 5%;
-    font-size: small;
-    z-index: 1;
-  }
-
-  #save_btn {
-    position: absolute;
-    right: 2%;
-    top: 160px;
-    width: 5%;
-    font-size: small;
-    z-index: 1;
-  }
-
 }
 </style>

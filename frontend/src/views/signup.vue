@@ -42,6 +42,8 @@
 
 <script>
 import pubsub from 'pubsub-js'
+import SurveyServices from '../services/SurveyServices'
+
 export default {
   name: 'SignUp',
   data() {
@@ -54,40 +56,51 @@ export default {
     }
   },
   methods: {
-    signupAction() {
-      this.$axios
-        .post('account/register/', {
+    async signupAction() {
+      try {
+        const response = await this.$axios.post('account/register/', {
           username: this.username,
           email: this.email,
           password1: this.password1,
           password2: this.password2,
-        })
-        .then((res) => {
-          alert('Sign up successful. Please verify your email!', res)
-          //update user status
-          pubsub.publish('disablesignupAction', true)
-          //save token on local storage
-          localStorage.setItem('token', res.data.key)
-          //redirect to the user profile page
+        });
+
+        alert('Sign up successful. Please verify your email!', response);
+
+        // update user status
+        pubsub.publish('disablesignupAction', true);
+
+        // save token on local storage
+        localStorage.setItem('token', response.data.key);
+
+        // redirect to the user profile page
+        if (this.$route.params.surveyid != null) {
+          const key = await SurveyServices.getToken(this.email);
+          alert(key)
+          this.$router.push({
+            name: 'accept_invitation',
+            query: { key: key, id: this.$route.params.surveyid, email:  this.$route.params.emailId},
+          });
+        } else {
           this.$router.replace({
             name: 'login',
-          })
-        })
-        .catch((error) => {
-          var messages = []
-          for (var key in error.response.data) {
-            messages.push(
-              this.$t('g5.' + error.response.data[key][0].replace(/\./g, '')) +
-              '<br>'
-            )
-          }
-          if (messages.length < 100) {
-            document.getElementById('error-message').innerHTML = messages
-          } else {
-            //document.getElementById('error-message').innerHTML = 'Sign up failed';
-          }
-        })
+          });
+        }
+      } catch (error) {
+        var messages = [];
+        for (var key in error.response.data) {
+          messages.push(
+            this.$t('g5.' + error.response.data[key][0].replace(/\./g, '')) + '<br>'
+          );
+        }
+        if (messages.length < 100) {
+          document.getElementById('error-message').innerHTML = messages;
+        } else {
+          //document.getElementById('error-message').innerHTML = 'Sign up failed';
+        }
+      }
     },
+    
     showPassword() {
       if (this.show1 == false) {
         this.$refs.input1.type = 'text'

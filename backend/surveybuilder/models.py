@@ -1,6 +1,8 @@
 from tkinter import Grid
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
+
 
 
 class Survey(models.Model):
@@ -21,6 +23,8 @@ class Survey(models.Model):
     code = models.CharField(max_length=5000, blank=True, default='')
     deleted = models.BooleanField(default=False)
     camera = models.BooleanField(default=False)
+    collaborator = ArrayField(models.IntegerField(), blank=True, default=list)
+
 
 
 class RandomSections(models.Model):
@@ -246,3 +250,4 @@ class Comment(models.Model):
 class Avatar(models.Model):
     url = models.CharField(max_length=5000, blank=True, default='')
     user = models.CharField(max_length=5000, blank=True, default='')
+

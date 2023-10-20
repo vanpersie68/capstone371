@@ -9,6 +9,22 @@ const getSurveys = async () => {
   })
 }
 
+const getCollaborators = async (id) => {
+  const response =  await axios.get(devServer.proxy + 'survey' + `/collaborators/survey/${id}`)
+  return response.data
+}
+
+const getToken = async (email) => {
+  try {
+    const response = await axios.get(devServer.proxy + 'account/get_token/?email=' + email)
+    return response.data.token;
+  } catch (error) {
+    console.error('Error getting token:', error);
+    throw error;
+  }
+}
+
+
 const publishSurveyAnswer = async (data) => {
   const response = await axios.post(baseUrl + '/st/survey/saveResponse', data)
   return response.data.Message
@@ -382,4 +398,6 @@ export default {
   postAvatar,
   deleteAvatar,
   getAvatar,
+  getCollaborators,
+  getToken,
 }
