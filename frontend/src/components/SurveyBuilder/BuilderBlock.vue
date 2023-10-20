@@ -22,12 +22,21 @@
             </li>
             <line-base class="dark" />
             <li>
-              <button-base class="secondary min red" :icon="'fas fa-eraser fa-me'" :title="$t('builderBlock.clearBlock')"
-                @mousedown="$store.dispatch('clearBlock')" />
+              <button-base class='secondary min' :icon="'fas fa-clone fa-me'"
+                           :title="$t('builderBlock.blockQuestionRandom')"
+                           @mousedown="$store.dispatch('duplicateBlock')" />
+            </li>
+            <line-base class='dark' />
+
+            <li>
+              <button-base class='secondary min red' :icon="'fas fa-eraser fa-me'"
+                           :title="$t('builderBlock.clearBlock')"
+                           @mousedown="$store.dispatch('clearBlock')" />
             </li>
             <li>
-              <button-base class="secondary min red" :icon="'fas fa-trash fa-me'" :title="$t('builderBlock.deleteBlock')"
-                @mousedown="$store.commit('deleteBlock', block)" />
+              <button-base class='secondary min red' :icon="'fas fa-trash fa-me'"
+                           :title="$t('builderBlock.deleteBlock')"
+                           @mousedown="$store.commit('deleteBlock', block)" />
             </li>
           </ul>
         </div>
@@ -37,27 +46,28 @@
     </div>
     <line-base class="light"></line-base>
     <h3>{{ $t('builderBlock.descriptionText') }}</h3>
-    <text-area :placeholder="$t('builderBlock.typeDescription')" :block="block" @handleInput="updateBlockdescription" />
-    <Container :get-child-payload="getChildPayload" group-name="1" @drop="onDrop">
-      <line-base class="light"></line-base>
-      <Draggable v-for="question in sortedQuestions" :key="question.order" :question="question">
-        <builder-question :key="question.order" :blockOrder="block.order"
-          :currentQuestion="block.questionData.currentQuestion" :question="question" :block="block" />
+    <text-area :placeholder="$t('builderBlock.typeDescription')" :block='block' @handleInput='updateBlockdescription' />
+    <Container :get-child-payload='getChildPayload' group-name='1' @drop='onDrop'>
+      <line-base class='light'></line-base>
+      <Draggable v-for='question in sortedQuestions' :key='question.order' :question='question'>
+        <builder-question :key='question.order' :blockOrder='block.order'
+                          :currentQuestion='block.questionData.currentQuestion' :question='question' :block='block' />
       </Draggable>
     </Container>
-    <div class="container">
-      <div class="popup" :class="newQuestion ? 'show above' : ''">
+    <div class='container'>
+      <div class='popup' :class="newQuestion ? 'show above' : ''">
         <h3>{{ $t('builderBlock.questionType') }}</h3>
-        <line-base class="dark" />
-        <ul v-for="type in questionTypes" :key="type">
+        <line-base class='dark' />
+        <ul v-for='type in questionTypes' :key='type'>
           <li>
-            <button-base class="secondary min" :title="$t('builderBlock.' + type.toString().replace(/\s/g, ''))"
-              @mousedown="insertNewQuestion(type)" />
+            <button-base class='secondary min' :title="$t('builderBlock.' + type.toString().replace(/\s/g, ''))"
+                         @mousedown='insertNewQuestion(type)' />
           </li>
         </ul>
       </div>
-      <button-base class="primary standard popup-btn" :icon="'fas fa-plus fa-me'"
-        :title="$t('builderBlock.addNewQuestion')" @buttonPress="pressNewQuestion" @buttonUnfocus="unfocusNewQuestion" />
+      <button-base class='primary standard popup-btn' :icon="'fas fa-plus fa-me'"
+                   :title="$t('builderBlock.addNewQuestion')" @buttonPress='pressNewQuestion'
+                   @buttonUnfocus='unfocusNewQuestion' />
     </div>
   </div>
 </template>
@@ -103,7 +113,7 @@ export default {
      * Sort questions inside a block
      * @returns Sorted questions in block
      */
-    sortedQuestions: function () {
+    sortedQuestions: function() {
       function compare(a, b) {
         if (a.order < b.order) {
           return -1
@@ -117,7 +127,7 @@ export default {
      * @returns true if active and false otherwise
      */
 
-    isActiveBlock: function () {
+    isActiveBlock: function() {
       if (
         this.currentBlock != null &&
         this.currentBlock.order == this.block.order
@@ -151,7 +161,7 @@ export default {
      */
     async updateBlockTitle(e) {
       await SurveyServices.patchBlock(this.block.id, {
-        title: this.block.title,
+        title: this.block.title
       })
     },
     async handleFocus () {
@@ -163,7 +173,7 @@ export default {
     async updateBlockdescription(e) {
       store.commit('updateBlockDescription', {
         inner: e,
-        block: this.block,
+        block: this.block
       })
       console.log('执行了更新描述');
       await SurveyServices.patchBlock(this.block.id, { description: e })
@@ -234,7 +244,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang= 'scss'>
 @import '../../assets/textbox.css';
 
 html:lang(ur) * {

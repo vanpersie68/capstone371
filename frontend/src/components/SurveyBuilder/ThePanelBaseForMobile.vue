@@ -8,6 +8,7 @@
     </div>
     <el-drawer title="header" :visible.sync="drawer" :with-header="false" :size="size" :direction="'ltr'">
       <div class="panel-base">
+        <!-- 不确定 -->
         <el-button id="back_btn" icon='el-icon-arrow-right' circle type='primary' @click='drawer=false' class='float' ></el-button>
         <br/>
         <div class="text-with-button">
@@ -209,6 +210,7 @@ html:lang(ur) * {
 }
 
 #background_div{
+  background-color: white;
   /*background-color: white;*/
   position: absolute;
   width: 100%;

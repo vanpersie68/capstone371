@@ -1,8 +1,14 @@
 <template>
   <div>
     <div class="post">
-      <a v-if="isImage" :href="question.articleURL" target="_blank"><img v-if="isImage" :src="question.articleImage"
-          :alt="question.articleTitle" width="100%" height="auto" /></a>
+      <a v-if="isImage" :href="question.articleURL" target="_blank"
+        ><img
+          v-if="isImage"
+          :src="question.articleImage"
+          :alt="question.articleTitle"
+          width="100%"
+          height="auto"
+      /></a>
       <div v-else class="no-image">{{ $t('postEditable.noImage') }}</div>
       <a :href="question.articleURL" target="_blank">
         <h1 @focusout="updateTitle">{{ question.articleTitle }}</h1>
@@ -16,16 +22,28 @@
     <line-base class="light" />
 
     <div class="comment">
-      <div v-for="item in question.comments" :key="item.id" class="comment-item">
+      <div
+        v-for="item in question.comments"
+        :key="item.id"
+        class="comment-item"
+      >
         <div class="comment-content">
           <div @click="chooseAvatar(item.id)" style="flex-shrink: 0">
             <el-avatar :key="item.avatarUrl" :src="item.avatarUrl"></el-avatar>
           </div>
           <div style="margin-left: 10px; width: 100%">
-            <el-input placeholder="Please enter a user name" size="small" v-model="item.username"
-              @blur="updateComment(item)"></el-input>
-            <el-input placeholder="Please enter a comment" size="small" v-model="item.content"
-              @blur="updateComment(item)"></el-input>
+            <el-input
+              placeholder="Please enter a user name"
+              size="small"
+              v-model="item.username"
+              @blur="updateComment(item)"
+            ></el-input>
+            <el-input
+              placeholder="Please enter a comment"
+              size="small"
+              v-model="item.content"
+              @blur="updateComment(item)"
+            ></el-input>
           </div>
         </div>
         <!-- <button-base class="primary standard" :title="'del'" @buttonPress="delComment(item.id)"></button-base> -->
@@ -33,18 +51,20 @@
       <line-base class="light" />
 
       <!-- <label style="font-weight:600;">Add Comment</label>
-    <div class="type-in">
-      <el-input v-model="comment"></el-input>
-      <button-base
-      class="primary standard"
-      :title="'Add'"
-      @buttonPress="addComment"
-
-    />
-
-    </div> -->
-      <ChooseAvatarModal v-if="dialogVisible" :dialogVisible.sync="dialogVisible" :currAvatarId="currAvatarId"
-        @onChange="changeAvatar" />
+  <div class="type-in">
+    <el-input v-model="comment"></el-input>
+    <button-base
+    class="primary standard"
+    :title="'Add'"
+    @buttonPress="addComment"
+  />
+  </div> -->
+      <ChooseAvatarModal
+        v-if="dialogVisible"
+        :dialogVisible.sync="dialogVisible"
+        :currAvatarId="currAvatarId"
+        @onChange="changeAvatar"
+      />
     </div>
   </div>
 </template>
@@ -99,7 +119,6 @@ export default {
       console.log(res)
       this.question.comments.push(res)
     },
-
     async delComment(id) {
       const res = await SurveyServices.delComment(id)
       this.question.comments.splice(
@@ -116,7 +135,6 @@ export default {
         parent: this.question,
         key: 'articleSource',
       })
-
       await SurveyServices.patchQuestionType(this.question.id, {
         articleSource: e.target.innerHTML,
       })
@@ -130,7 +148,6 @@ export default {
         parent: this.question,
         key: 'articleTitle',
       })
-
       await SurveyServices.patchQuestionType(this.question.id, {
         articleTitle: e.target.innerHTML,
       })
@@ -144,7 +161,6 @@ export default {
         parent: this.question,
         key: 'articleSnippet',
       })
-
       await SurveyServices.patchQuestionType(this.question.id, {
         articleSnippet: e.target.innerHTML,
       })
@@ -162,39 +178,31 @@ export default {
       ) {
         return false
       }
-
       return true
     },
   },
 }
 </script>
-
 <style scoped>
 html:lang(ur) * {
   text-align: center;
   font-family: "Times New Roman", Times, serif;
 }
-
-a {
-  /* New rule to remove underlines from links */
+a { /* New rule to remove underlines from links */
   text-decoration: none;
 }
-
 .comment-item,
 .comment-content {
   display: flex;
   margin-bottom: 10px;
 }
-
 .comment-content {
   width: 90%;
 }
-
 .type-in {
   display: flex;
   align-items: center;
 }
-
 .post {
   width: 400px;
   background-color: white;
@@ -203,7 +211,6 @@ a {
   margin-top: 30px;
   padding-bottom: 10px;
 }
-
 .no-image {
   background-color: white;
   height: 100px;
@@ -211,7 +218,6 @@ a {
   color: black;
   text-align: center;
 }
-
 p {
   font-size: 8px;
   font-weight: normal;
@@ -220,22 +226,17 @@ p {
   color: #65676b;
   margin: 6px 12px 0px;
 }
-
-h1,
-h2 {
+h1, h2 {
   font-size: 14px;
   font-weight: 600;
   line-height: 16px;
   text-align: left;
   margin: 6px 12px 2px;
 }
-
 h1 {
   color: black;
-  font-weight: bold;
-  /* Bold the font */
+  font-weight: bold; /* Bold the font */
 }
-
 h2 {
   color: black;
   font-weight: 500;

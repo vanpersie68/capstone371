@@ -24,7 +24,7 @@ export default {
 <style scoped>
 .svg-icon {
   width: 40px;
-  text-align: center;
+  text-align:center;
   height: 1em;
   vertical-align: -0.15em;
   fill: currentColor;

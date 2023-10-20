@@ -75,10 +75,6 @@
 
     <post-mix-editable v-else-if="content.articleStyle === 'Mix'" :question="data" />
 
-    <post-quora-editable v-else-if="content.articleStyle === 'Quora'" :question="data" />
-
-    <post-mastodon-editable v-else-if="content.articleStyle === 'Mastodon'" :question="data" />
-
     <div v-if="content.articleLikesOn">
       <line-base class="light" />
       <label for="likeCount">{{ $t('qContentArticles.likeCount') }}</label>

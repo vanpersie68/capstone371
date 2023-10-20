@@ -4,7 +4,8 @@
     <div class="page1" v-if="PageType">
       <el-container class="content-boxPage1">
         <!--        <el-aside width="500px" class="content-aside">-->
-        <el-aside width="50%" class="content-aside">
+        <!-- <el-aside width="50%" class="content-aside"> -->
+        <el-aside class="content-aside">
           <h1>{{ $t('g5.Welcome to fakenewz Survey Platform!') }}</h1>
           <p>{{ $t('home.title1') }}</p>
           <p>{{ $t('home.title2') }}</p>

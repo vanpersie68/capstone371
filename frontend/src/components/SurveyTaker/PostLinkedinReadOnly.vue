@@ -906,7 +906,7 @@
     }
   
     .post {
-      width: 320px;
+      width: 80%;
       background-color: white;
       border: 1px solid #d1d9dd;
       margin: 0 auto;

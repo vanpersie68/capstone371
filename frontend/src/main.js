@@ -18,6 +18,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import VueClipboard from 'vue-clipboard2'
 
 import lottie from 'vue-lottie'
+
 import './assets/icons/index.js'
 Vue.component('lottie', lottie)
 

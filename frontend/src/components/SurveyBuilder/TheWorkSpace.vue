@@ -235,24 +235,8 @@ html:lang(ur) * {
   flex-direction: column;
   justify-content: center;
   max-width: 816px;
-  min-width: 816px;
+  /* min-width: 816px; */
   margin: 0 auto;
-}
-
-#preview_btn {
-  position: absolute;
-  right: 2%;
-  top: 100px;
-  width: 6%;
-  font-size: small;
-}
-
-#save_btn {
-  position: absolute;
-  right: 2%;
-  top: 160px;
-  width: 6%;
-  font-size: small;
 }
 
 .el-button--primary {
@@ -265,5 +249,47 @@ html:lang(ur) * {
   background: #5976d5 !important;
   border-color: #5976d5 !important;
   color: #ffffff !important;
+}
+
+/*PC device*/
+@media only screen and (min-width: 992px) {
+  #preview_btn {
+    position: absolute;
+    right: 2%;
+    top: 100px;
+    width: 5%;
+    font-size: small;
+    z-index: 1;
+  }
+  #save_btn {
+    position: absolute;
+    right: 2%;
+    top: 160px;
+    width: 5%;
+    font-size: small;
+    z-index: 1;
+  }
+}
+
+/*mobile*/
+@media only screen and (max-width: 767px) {
+  #preview_btn {
+    position: absolute;
+    right: 2%;
+    top: 3rem;
+    /*width: 5%;*/
+    font-size: small;
+    z-index: 1;
+    margin-right: 5rem;
+    /*margin-bottom: 15rem;*/
+  }
+  #save_btn {
+    position: absolute;
+    right: 2%;
+    top: 3rem;
+    /*width: 5%;*/
+    font-size: small;
+    z-index: 1;
+  }
 }
 </style>

@@ -45,6 +45,9 @@
     "Linkedin": "Linkedin",
     "Tumblr": "Tumblr",
     "Pinterest": "Pinterest",
+    "Quora": "Quora",
+    "Mastodon": "Mastodon",
+    "Mix": "Mix",
     "Text": "Text",
     "Integer": "Integer",
     "Decimal": "Decimal",
@@ -129,6 +132,7 @@
     "retweetCount": "Retweet Count",
     "sendCount": "Send Count",
     "repostCount": "Repost Count",
+    "upvote": "Upvote",
     "reblogCount": "Reblog Count"
   },
 
