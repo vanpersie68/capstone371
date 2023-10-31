@@ -88,18 +88,30 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/static")]
+
 
 WSGI_APPLICATION = 'django_core.wsgi.application'
 
 # Local database
+# DATABASES = {
+#     'default': {
+# 		    'ENGINE': 'django.db.backends.postgresql',
+# 				'NAME': 'defaultdb',
+# 				'USER': 'postgres',
+# 				'PASSWORD': '1',
+# 		    'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+# 线上数据库
 DATABASES = {
     'default': {
-		    'ENGINE': 'django.db.backends.postgresql',
-				'NAME': 'defaultdb',
-				'USER': 'postgres',
-				'PASSWORD': '1',
-		    'HOST': 'localhost',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'defaultdb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres*5432',
+        'HOST': '170.64.173.74',
         'PORT': '5432',
     }
 }
@@ -125,21 +137,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/static")]
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
