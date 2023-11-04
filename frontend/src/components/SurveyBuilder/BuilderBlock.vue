@@ -1,12 +1,12 @@
 <template>
-  <div class="block" :class="isActiveBlock ? 'active' : ''" @mouseup="handleBlockClick" @mousedown="handleFocus">
-    <div class="block-header">
-      <div class="block-title">
-        <input type="text" v-model="block.title" @blur="updateBlockTitle" class="h1-tb" :style="$i18n.locale === 'ur' ? 'text-align: right;' : 'text-align: left;'
+  <div class='block' :class="isActiveBlock ? 'active' : ''" @mouseup='handleBlockClick' @mousedown='handleFocus'>
+    <div class='block-header'>
+      <div class='block-title'>
+        <input type='text' v-model='block.title' @blur='updateBlockTitle' class='h1-tb' :style="$i18n.locale === 'ur' ? 'text-align: right;' : 'text-align: left;'
           " />
       </div>
-      <div class="opt-container">
-        <div class="popup" :class="blockOptions
+      <div class='opt-container'>
+        <div class='popup' :class="blockOptions
             ? currentBlock.order == numBlocks &&
               block.questionData.questions.length < 1
               ? 'show above'
@@ -14,37 +14,32 @@
             : ''
           " :style="$i18n.locale === 'ur' ? 'left: 0px;' : 'right: 0px;'">
           <h3>{{ $t('builderBlock.blockOptions') }}</h3>
-          <line-base class="dark" />
-          <ul>
-            <li>
-              <button-base class="secondary min" :icon="'fas fa-clone fa-me'" :title="$t('builderBlock.duplicateBlock')"
-                @mousedown="$store.dispatch('duplicateBlock')" />
-            </li>
-            <line-base class="dark" />
-            <li>
-              <button-base class='secondary min' :icon="'fas fa-clone fa-me'"
+          <line-base class='dark' />
+          <li>
+            <button-base class='secondary min' :icon="'fas fa-clone fa-me'"
                            :title="$t('builderBlock.blockQuestionRandom')"
                            @mousedown="$store.dispatch('duplicateBlock')" />
-            </li>
-            <line-base class='dark' />
+          </li>
 
-            <li>
-              <button-base class='secondary min red' :icon="'fas fa-eraser fa-me'"
-                           :title="$t('builderBlock.clearBlock')"
-                           @mousedown="$store.dispatch('clearBlock')" />
-            </li>
-            <li>
-              <button-base class='secondary min red' :icon="'fas fa-trash fa-me'"
-                           :title="$t('builderBlock.deleteBlock')"
-                           @mousedown="$store.commit('deleteBlock', block)" />
-            </li>
-          </ul>
+          <line-base class='dark' />
+          <li>
+            <button-base class='secondary min red' :icon="'fas fa-eraser fa-me'"
+                          :title="$t('builderBlock.clearBlock')"
+                          @mousedown="$store.dispatch('clearBlock')" />
+          </li>
+
+          <li>
+            <button-base class='secondary min red' :icon="'fas fa-trash fa-me'"
+                          :title="$t('builderBlock.deleteBlock')"
+                          @mousedown="$store.commit('deleteBlock', block)" />
+          </li>
+          
         </div>
-        <button-base class="secondary square" :icon="'fas fa-ellipsis-h fa-lg'" @buttonPress="pressBlockOptions"
-          @buttonUnfocus="unfocusBlockOptions" />
+        <button-base class='secondary square' :icon="'fas fa-ellipsis-h fa-lg'" @buttonPress='pressBlockOptions'
+                     @buttonUnfocus='unfocusBlockOptions' />
       </div>
     </div>
-    <line-base class="light"></line-base>
+    <line-base class='light'></line-base>
     <h3>{{ $t('builderBlock.descriptionText') }}</h3>
     <text-area :placeholder="$t('builderBlock.typeDescription')" :block='block' @handleInput='updateBlockdescription' />
     <Container :get-child-payload='getChildPayload' group-name='1' @drop='onDrop'>
@@ -398,7 +393,7 @@ h3 {
 
 @media (max-width: 889px) {
   .block {
-    width: 90%;
+    width: 300px;
   }
 }
 
